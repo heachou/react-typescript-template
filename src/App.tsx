@@ -1,26 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import { connect } from 'react-redux'
+import { addCount } from './store/actions'
+import { AppState } from './store'
+import { Button } from 'antd'
+// import 'antd/dist/antd.css'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+interface IAppProps {
+  count: number,
+  addCount: typeof addCount
 }
 
-export default App;
+class App extends Component<IAppProps, {}>{
+  render() {
+    const { count } = this.props
+    return (
+      <div>
+        <p>{count}</p>
+        <Button type="primary" onClick={this.handleClick}>点击</Button>
+      </div>
+    )
+  }
+  private handleClick = () => {
+    this.props.addCount()
+  }
+}
+
+const mapStateToProps = (state: AppState) => ({
+  count: state.count
+})
+
+export default connect(mapStateToProps, { addCount })(App)
