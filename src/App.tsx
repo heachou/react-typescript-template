@@ -1,32 +1,23 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux'
-import { addCount } from './store/actions'
-import { AppState } from './store'
-import { Button } from 'antd'
-// import 'antd/dist/antd.css'
+import React, { Component } from 'react'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import Index from './pages/index/index'
+import Login from './pages/login/login'
+import s from './app.less'
 
-interface IAppProps {
-  count: number,
-  addCount: typeof addCount
-}
-
-class App extends Component<IAppProps, {}>{
+class App extends Component{
   render() {
-    const { count } = this.props
     return (
-      <div>
-        <p>{count}</p>
-        <Button type="primary" onClick={this.handleClick}>点击</Button>
+      <div className={s.app}>
+        <BrowserRouter>
+          <Switch>
+            <Route exact path="/" component={Index} />
+            <Route path="/login" component={Login} />
+          </Switch>
+        </BrowserRouter>
       </div>
     )
   }
-  private handleClick = () => {
-    this.props.addCount()
-  }
+  
 }
 
-const mapStateToProps = (state: AppState) => ({
-  count: state.count
-})
-
-export default connect(mapStateToProps, { addCount })(App)
+export default App

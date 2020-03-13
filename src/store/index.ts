@@ -1,4 +1,4 @@
-import { combineReducers, createStore,compose,applyMiddleware } from 'redux'
+import { combineReducers, createStore, compose, applyMiddleware } from 'redux'
 import {
   persistStore,
   persistReducer
@@ -13,26 +13,28 @@ const rootReducer = combineReducers({
 
 const persistConfig = {
   key: 'root',
-  storage:storageSession,
+  storage: storageSession,
 }
-// let devTools = process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__() : null
 
 export type AppState = ReturnType<typeof rootReducer>
 
-declare global{
-  interface window{
+declare global {
+  interface window {
     __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
   }
 }
 
-const persistedReducer = persistReducer(persistConfig, rootReducer)
+const composeEnhancers = process.env.NODE_ENV === 'development'
+  ? compose(applyMiddleware(thunk), (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__())
+  : compose(applyMiddleware(thunk))
 
-const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 const store = createStore(
   persistedReducer,
-  composeEnhancers()
+  composeEnhancers
 )
+
 let persistor = persistStore(store)
 
 export {
