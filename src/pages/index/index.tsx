@@ -17,6 +17,9 @@ class Index extends Component<IAppProps, {}>{
   private toLogin = () => {
     this.props.history.push('/login')
   }
+  private testHook=()=>{
+    this.props.history.push('/hooks')
+  }
   render() {
     const { count } = this.props
     return <div>
@@ -24,6 +27,7 @@ class Index extends Component<IAppProps, {}>{
       <p>{count}</p>
       <Button type="primary" onClick={this.handleClick}>点击</Button>
       <Button type="primary" onClick={this.toLogin}>跳转到登录</Button>
+      <Button type="primary" onClick={this.testHook}>测试 hook</Button>
     </div>
   }
 }
